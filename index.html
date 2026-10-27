@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shiv Sai Snacks Corner — Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF7EC; --paper:#FFFFFF; --ink:#2B1A12; --ink-soft:#6E5B4E;
+  --red:#C2321F; --red-dark:#8A1F12; --gold:#E0932E; --line:#F0E2CF;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B120C; --paper:#271A12; --ink:#F5E9DC; --ink-soft:#C9B49E;
+    --red:#E25B41; --red-dark:#C2321F; --gold:#F0A94A; --line:#3A2A1C;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B120C; --paper:#271A12; --ink:#F5E9DC; --ink-soft:#C9B49E;
+  --red:#E25B41; --red-dark:#C2321F; --gold:#F0A94A; --line:#3A2A1C;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:calc(118px + env(safe-area-inset-top,0px))}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Work Sans',sans-serif;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:calc(env(safe-area-inset-bottom,0px) + 72px);}
+h1,h2,.brand{font-family:'Baloo 2',sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--red-dark)}
+
+header{position:sticky;top:0;top:env(safe-area-inset-top,0px);z-index:20;background:var(--red-dark);color:#FFF2E4;
+  padding:14px 16px 0}
+.brand{font-weight:800;font-size:1.4rem;letter-spacing:.3px;display:flex;align-items:baseline;gap:8px}
+.brand span{font-family:'Work Sans';font-weight:500;font-size:.72rem;color:#FFD9BE;letter-spacing:.4px}
+.sub{font-size:.78rem;color:#FFD9BE;margin:2px 0 12px}
+nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#FFF2E4;
+  font-family:'Work Sans';font-weight:600;font-size:.78rem;padding:7px 13px;border-radius:999px;cursor:pointer}
+nav button.active{background:var(--gold);border-color:var(--gold);color:#2B1A12}
+
+main{max-width:640px;margin:0 auto;padding:18px 14px 10px}
+.cat{margin-bottom:28px;scroll-margin-top:118px}
+.cat h2{font-size:1.15rem;margin:0 0 4px;color:var(--red)}
+.cat .note{font-size:.78rem;color:var(--ink-soft);margin:0 0 10px}
+.item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.item .name{flex:1;font-size:.93rem;line-height:1.3}
+.item .name small{display:block;color:var(--ink-soft);font-size:.74rem;font-weight:400}
+.pricebtns{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.pbtn{background:var(--paper);border:1.3px solid var(--red);color:var(--red);font-family:'Work Sans';font-weight:600;
+  font-size:.78rem;padding:7px 10px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.pbtn:active{background:var(--red);color:#fff}
+.pbtn .qty{display:inline-block;min-width:14px;text-align:center}
+
+.cartbar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--red-dark);color:#fff;
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px;
+  box-shadow:0 -4px 14px rgba(0,0,0,.18)}
+.cartbar .info{flex:1;font-size:.84rem}
+.cartbar .info b{font-family:'Baloo 2';font-size:1.02rem;display:block}
+.cartbar button{background:var(--gold);color:#2B1A12;border:none;font-family:'Work Sans';font-weight:700;
+  font-size:.86rem;padding:11px 16px;border-radius:10px;cursor:pointer}
+.cartbar button:disabled{opacity:.4}
+
+.sheet{position:fixed;inset:0;z-index:40;display:none;background:rgba(20,10,5,.45)}
+.sheet.open{display:block}
+.sheet .panel{position:absolute;left:0;right:0;bottom:0;background:var(--paper);border-radius:18px 18px 0 0;
+  max-height:80vh;overflow-y:auto;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))}
+.sheet h3{margin:0 0 10px;font-family:'Baloo 2';color:var(--red)}
+.sline{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);font-size:.88rem;gap:8px}
+.sline .rm{color:var(--red-dark);background:none;border:none;font-size:1.1rem;cursor:pointer;padding:0 4px}
+.stot{display:flex;justify-content:space-between;font-weight:700;padding-top:10px;font-family:'Baloo 2';font-size:1.05rem}
+.waBtn{display:block;width:100%;margin-top:14px;background:#25D366;color:#063B18;border:none;font-weight:700;
+  font-size:.95rem;padding:13px;border-radius:11px;cursor:pointer;font-family:'Work Sans'}
+.closeSheet{background:none;border:1px solid var(--line);color:var(--ink-soft);padding:7px 12px;border-radius:9px;
+  float:right;cursor:pointer;font-size:.78rem;margin-top:-2px}
+footer{max-width:640px;margin:10px auto 0;padding:10px 16px 0;font-size:.72rem;color:var(--ink-soft);text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Shiv Sai <span>SNACKS CORNER</span></div>
+  <div class="sub">Indian · Chinese · Malwani · Tardeo, Mumbai</div>
+  <nav id="nav"></nav>
+</header>
+<main id="main"></main>
+<footer>Tap an item's price to add it. Review your order, then confirm on WhatsApp — the shop will reply to finalize.</footer>
+
+<div class="cartbar">
+  <div class="info"><b id="cartCount">0 items</b><span id="cartTotal">₹0</span></div>
+  <button id="reviewBtn" disabled onclick="openSheet()">Review order</button>
+</div>
+
+<div class="sheet" id="sheet">
+  <div class="panel">
+    <button class="closeSheet" onclick="closeSheet()">Close</button>
+    <h3>Your order</h3>
+    <div id="sheetLines"></div>
+    <div class="stot"><span>Total</span><span id="sheetTotal">₹0</span></div>
+    <button class="waBtn" onclick="sendWhatsApp()">Confirm on WhatsApp →</button>
+  </div>
+</div>
+
+<script>
+const PHONE = "919029007863";
+// [name, price] ; price "A/B" = Half/Full ; price number = single price ; "APS" = ask price (not orderable)
+const MENU = [
+["Veg Soup",["Veg. Soup","60/110"],["Veg. Manchow Soup","60/110"],["Veg. Clear Soup",120],["Veg. Hot & Sour Soup",120],["Veg. Shiv Sai Spl Soup",130]],
+["Chicken Soup",["Chi. Soup","70/120"],["Chi. Manchow Soup","70/120"],["Chi. Clear Soup",130],["Chi. Hot & Sour Soup",130],["Chi. Shiv Sai Spl Soup",130]],
+["Combos",["Combo Small — Half Chicken Fried Rice + Half Chicken Soup + Half Lolipop (or Chilly Dry) + 200ml Cold Drink",230],
+["Combo Big — Full Chicken Schez Rice + Full Chicken Soup + Full Lollipop Dry (or Chilly Dry) + Single Omelet + 500ml Cold Drink",450]],
+["Extras",["Fried Noodles",25],["Schezwan Chatney",25],["Mayonese",25],["Bhakri",25],["Solkadhi",30]],
+["Malwani — Chicken",["Chicken Malvani",200],["Chicken Sukha",250]],
+["Malwani — Prawns",["Prawns Masala",250],["Prawns Rawa Fry",250],["Prawns Koliwada",250]],
+["Malvani Thali",["Chicken Malvani Thali — semi gravy, 2 bhakri, rice, rassa, solkadhi, kanda limbu",260],
+["Chicken Sukka Thali — sukka, 2 bhakri, rice, rassa, solkadhi, kanda limbu",300],
+["Prawns Masala Thali — masala, 2 bhakri, rice, rassa, solkadhi, kanda limbu",300],
+["Prawns Fry Thali — fry, 2 bhakri, rice, rassa, solkadhi, kanda limbu",325],
+["Surmai Fry Thali — 2 bhakri, rice, rassa, solkadhi, kanda limbu (ask price)","APS"],
+["Bombil Fry Thali — 2 bhakri, rice, rassa, solkadhi, kanda limbu",220]],
+["Veg Rice",["Veg. Fried Rice","90/150"],["Veg. Schezwan Rice","100/170"],["Veg. Combination Fried Rice","100/170"],
+["Veg. Combination Schez Rice","110/180"],["Veg. Manchurian Rice","120/210"],["Veg. Triple Rice","130/240"],
+["Veg. Burnt Chilly Rice","140/250"],["Veg. Hong Kong Rice","160/270"],["Veg. Singapore Rice","160/270"],
+["Veg. Chopper Rice","160/270"],["Veg. Crorepati Rice","170/270"],["Veg. Dragon Rice","170/270"],
+["Veg. Shiv Sai Spl Rice","170/270"],["Veg. 1000 Rice","170/280"],["Veg. Dimond Rice","170/280"]],
+["Chicken Rice",["Egg Fried Rice","90/160"],["Chi. Fried Rice","100/170"],["Egg Schezwan Rice","100/170"],
+["Chi. Schezwan Rice","110/180"],["Chi. Combination Fried Rice","120/200"],["Chi. Combination Schz Rice","120/200"],
+["Chi. Manchurian Rice","130/240"],["Chi. Triple Rice","130/240"],["Chi. Garlic Rice","120/200"],
+["Chi. Burnt Chilly Rice","140/260"],["Chi. Hong Kong Rice","160/270"],["Chi. Singapore Rice","160/270"],
+["Chi. Chopper Rice","160/270"],["Chi. Crorepati Rice","170/280"],["Chi. Dragon Rice","170/280"],
+["Chi. 1000 Rice","170/280"],["Chi. Shiv Sai Spl Rice","170/280"],["Chicken Packing Rice",300],["Chicken Boxer Rice",300]],
+["Prawns Rice",["Prawns Fried Rice",220],["Prawns Schezwan Rice",240],["Prawns Triple Rice",270],
+["Prawns Shivsai Special Rice",350],["Prawns Packing Rice",350],["Prawns Boxer Rice",350],["Prawns Chopper Rice",350]],
+["Veg Noodles",["Veg. Fried Noodles","90/150"],["Veg. Schezwan Noodles","100/170"],["Veg. Combination Fried Noodles","100/170"],
+["Veg. Combination Schez Noodles","120/180"],["Veg. Manchurian Noodles","130/210"],["Veg. Triple Noodles","130/240"],
+["Veg. Burnt Chilly Noodles","140/240"],["Veg. Hong Kong Noodles","160/240"],["Veg. Singapore Noodles","160/270"],
+["Veg. Chopper Noodles","160/270"],["Veg. Crorepati Noodles","170/270"],["Veg. Dragon Noodles","170/270"],
+["Veg. 1000 Noodles","170/270"],["Veg. Shiv Sai Spl Noodles","170/270"],["Veg. Dimond Noodles","170/270"]],
+["Chicken Noodles",["Egg Fried Noodles","90/160"],["Chi. Fried Noodles","100/170"],["Egg Schezwan Noodles","100/170"],
+["Chi. Schezwan Noodles","110/180"],["Chi. Combination Fried Noodles","120/200"],["Chi. Combination Schz Noodles","120/210"],
+["Chi. Manchurian Noodles","130/240"],["Chi. Triple Noodles","130/240"],["Chi. Burnt Chilly Noodles","140/250"],
+["Chi. Hong Kong Noodles","160/270"],["Chi. Singapore Noodles","160/270"],["Chi. Chopper Noodles","160/270"],
+["Chi. Crorepati Noodles","170/270"],["Chi. Dragon Noodles","170/280"],["Chi. 1000 Noodles","170/280"],
+["Chi. Diamond Noodles","170/280"],["Chi. Shiv Sai Spl Noodles","170/280"]],
+["Veg Starter",["Chinese Bhel","90/150"],["Veg. Manchurian Dry","100/160"],["Veg. Manchurian Grevy","90/150"],
+["Veg. Chilly Dry","100/160"],["Veg. Chilly Grevy","100/170"],["Veg. Schezwan Dry","120/190"],
+["Veg. Schezwan Grevy",200],["Veg. Crispy",200]],
+["Paneer Starter",["Paneer Chilly Dry",200],["Paneer Chilly Gravy",220],["Paneer Manchurian Dry",200],
+["Paneer Manchurian Gravy",220],["Paneer Red Chilly Dry",220],["Paneer Crispy",250]],
+["Prawns Starter",["Prawns Chilli Dry",250],["Prawns Chilli Grevy",270],["Prawns Koliwada",250],
+["Prawns Butter Garlic",300],["Prawns Manchurian Dry",250],["Prawns Manchurian Grevy",270],["Prawns Crispy",300]],
+["Chicken Starter",["Chi. Chinese Bhel","90/160"],["Chi. Manchurian Dry","110/200"],["Chi. Manchurian Grevy","120/220"],
+["Chi. Chilly Dry","110/200"],["Chi. Chilly Grevy","120/220"],["Chi. Schezwan Dry","120/220"],
+["Chi. Schezwan Grevy","130/240"],["Chi. Lollypop","110/190"],["Egg Lollypop","120/200"],
+["Chi. Lollypop Masala Dry","140/220"],["Chi. Lollypop Grevy","140/240"],["Chi. Apple Lollypop Dry",260],
+["Chicken Oyster Chilly",240],["Chi. Crispy",250],["Chi. 65",270],["Chi. Dragon",280]]
+];
+
+let cart = {}; // key: "name|label" -> {name,label,price,qty}
+
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-')}
+
+function render(){
+  const nav = document.getElementById('nav'), main = document.getElementById('main');
+  nav.innerHTML=''; main.innerHTML='';
+  MENU.forEach((cat,ci)=>{
+    const title=cat[0], items=cat.slice(1);
+    const id='c'+slug(title);
+    const b=document.createElement('button'); b.textContent=title; b.onclick=()=>{document.getElementById(id).scrollIntoView({behavior:'smooth'});};
+    nav.appendChild(b);
+    const sec=document.createElement('section'); sec.className='cat'; sec.id=id;
+    sec.innerHTML=`<h2>${title}</h2>`;
+    items.forEach(([name,price])=>{
+      const row=document.createElement('div'); row.className='item';
+      const long = name.length>46;
+      row.innerHTML=`<div class="name">${long?name.split(' — ')[0]+`<small>${name.split(' — ')[1]||''}</small>`:name}</div>`;
+      const btns=document.createElement('div'); btns.className='pricebtns';
+      if(price==="APS"){
+        btns.innerHTML=`<span style="font-size:.78rem;color:var(--ink-soft)">Ask staff</span>`;
+      } else if(typeof price==='string' && price.includes('/')){
+        const [h,f]=price.split('/');
+        btns.appendChild(makeBtn(name,'Half',h));
+        btns.appendChild(makeBtn(name,'Full',f));
+      } else {
+        btns.appendChild(makeBtn(name,'',price));
+      }
+      row.appendChild(btns);
+      sec.appendChild(row);
+    });
+    main.appendChild(sec);
+  });
+  updateBar();
+}
+
+function makeBtn(name,label,price){
+  const key=name+'|'+label;
+  const btn=document.createElement('button'); btn.className='pbtn'; btn.dataset.key=key;
+  btn.onclick=()=>{ add(name,label,Number(price)); };
+  paintBtn(btn,label,price);
+  return btn;
+}
+function paintBtn(btn,label,price){
+  const q = cart[btn.dataset.key] ? cart[btn.dataset.key].qty : 0;
+  btn.innerHTML = (label?label+' ':'')+'₹'+price+(q?` <span class="qty">· ${q}</span>`:'');
+}
+function add(name,label,price){
+  const key=name+'|'+label;
+  if(!cart[key]) cart[key]={name,label,price,qty:0};
+  cart[key].qty++;
+  document.querySelectorAll(`[data-key="${CSS.escape(key)}"]`).forEach(b=>paintBtn(b,label,price));
+  updateBar();
+}
+function removeLine(key){
+  delete cart[key];
+  render(); // re-sync all button labels
+  openSheet();
+}
+function updateBar(){
+  let count=0,total=0;
+  Object.values(cart).forEach(l=>{count+=l.qty; total+=l.qty*l.price;});
+  document.getElementById('cartCount').textContent=count+' item'+(count===1?'':'s');
+  document.getElementById('cartTotal').textContent='₹'+total;
+  document.getElementById('reviewBtn').disabled = count===0;
+}
+function openSheet(){
+  const lines=document.getElementById('sheetLines'); lines.innerHTML='';
+  let total=0;
+  Object.entries(cart).forEach(([key,l])=>{
+    if(l.qty<=0) return;
+    total+=l.qty*l.price;
+    const d=document.createElement('div'); d.className='sline';
+    d.innerHTML=`<span>${l.name}${l.label?' ('+l.label+')':''} × ${l.qty}</span><span>₹${l.qty*l.price} <button class="rm" onclick="removeLine('${key.replace(/'/g,"\\'")}')">✕</button></span>`;
+    lines.appendChild(d);
+  });
+  document.getElementById('sheetTotal').textContent='₹'+total;
+  document.getElementById('sheet').classList.add('open');
+}
+function closeSheet(){document.getElementById('sheet').classList.remove('open');}
+function sendWhatsApp(){
+  let total=0, lines=[];
+  Object.values(cart).forEach(l=>{ if(l.qty>0){ total+=l.qty*l.price; lines.push(`${l.qty} x ${l.name}${l.label?' ('+l.label+')':''} - ₹${l.qty*l.price}`);} });
+  if(!lines.length) return;
+  const msg = "Hi Shiv Sai Snacks Corner! I'd like to place an order:\n\n"+lines.join('\n')+`\n\nTotal: ₹${total}\n\nPlease confirm availability and delivery time. Thank you!`;
+  window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+render();
+</script>
+</body>
+</html>
